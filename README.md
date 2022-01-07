@@ -1,6 +1,6 @@
 ### About
 This plugin is my first contribution to the FiveM community.
-It is an edit of the LegacyFuel module from InZidiuz (https://github.com/InZidiuZ/LegacyFuel)
+It is an edit of the [LegacyFuel](https://github.com/InZidiuZ/LegacyFuel) module from InZidiuz
 
 ### Installation
 1) Download the latest version in the "code" tab on GitHub.
