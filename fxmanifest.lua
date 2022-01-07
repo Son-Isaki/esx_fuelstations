@@ -1,20 +1,29 @@
 fx_version 'bodacious'
+
 game 'gta5'
 
-author 'InZidiuZ'
-description 'Legacy Fuel'
-version '1.3'
+author 'Isaki'
+description 'ESX Fuel management & gas stations'
+version '1.0'
 
 -- What to run
 client_scripts {
 	'config.lua',
-	'functions/functions_client.lua',
-	'source/fuel_client.lua'
+	'client/functions.lua',
+    'locales/en.lua',
+    'locales/fr.lua',
+	'client/main.lua'
 }
 
 server_scripts {
 	'config.lua',
-	'source/fuel_server.lua'
+    'locales/en.lua',
+    'locales/fr.lua',
+	'server/main.lua'
+}
+
+dependencies {
+    'es_extended'
 }
 
 exports {
