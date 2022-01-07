@@ -44,13 +44,13 @@ function CreateBlip(coords)
 	local blip = AddBlipForCoord(coords)
 
 	SetBlipSprite(blip, 361)
-	SetBlipScale(blip, 0.9)
-	SetBlipColour(blip, 4)
+	SetBlipScale(blip, 0.8)
+	SetBlipColour(blip, 1)
 	SetBlipDisplay(blip, 4)
 	SetBlipAsShortRange(blip, true)
 
 	BeginTextCommandSetBlipName("STRING")
-	AddTextComponentString("Gas Station")
+	AddTextComponentString(_U('BLIP_TITLE'))
 	EndTextCommandSetBlipName(blip)
 
 	return blip

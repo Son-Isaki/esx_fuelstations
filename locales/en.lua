@@ -1,4 +1,5 @@
 Locales['en'] = {
+	['BLIP_TITLE'] = "Gas station",
     ['ExitVehicle'] = "Exit the vehicle to refuel",
 	['EToRefuel'] = "Press ~g~E ~w~to refuel vehicle",
 	['JerryCanEmpty'] = "Jerry can is empty",
