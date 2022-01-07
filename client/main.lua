@@ -164,13 +164,13 @@ AddEventHandler('fuel:refuelFromPump', function(pumpObject, ped, vehicle)
 			local extraString = ""
 
 			if Config.UseESX then
-				extraString = "\n" .. Config.Strings.TotalCost .. ": ~g~$" .. Round(currentCost, 1)
+				extraString = "\n" .. _U('TotalCost') .. ": ~g~$" .. Round(currentCost, 1)
 			end
 
-			DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, Config.Strings.CancelFuelingPump .. extraString)
+			DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('CancelFuelingPump') .. extraString)
 			DrawText3Ds(vehicleCoords.x, vehicleCoords.y, vehicleCoords.z + 0.5, Round(currentFuel, 1) .. "%")
 		else
-			DrawText3Ds(vehicleCoords.x, vehicleCoords.y, vehicleCoords.z + 0.5, Config.Strings.CancelFuelingJerryCan .. "\nGas can: ~g~" .. Round(GetAmmoInPedWeapon(ped, 883325847) / 4500 * 100, 1) .. "% | Vehicle: " .. Round(currentFuel, 1) .. "%")
+			DrawText3Ds(vehicleCoords.x, vehicleCoords.y, vehicleCoords.z + 0.5, _U('CancelFuelingJerryCan') .. "\nGas can: ~g~" .. Round(GetAmmoInPedWeapon(ped, 883325847) / 4500 * 100, 1) .. "% | Vehicle: " .. Round(currentFuel, 1) .. "%")
 		end
 
 		if not IsEntityPlayingAnim(ped, "timetable@gardener@filling_can", "gar_ig_5_filling_can", 3) then
@@ -196,7 +196,7 @@ Citizen.CreateThread(function()
 			if IsPedInAnyVehicle(ped) and GetPedInVehicleSeat(GetVehiclePedIsIn(ped), -1) == ped then
 				local pumpCoords = GetEntityCoords(isNearPump)
 
-				DrawText3Ds(pumpCoords.x, pumpCoords.y, pumpCoords.z + 1.2, Config.Strings.ExitVehicle)
+				DrawText3Ds(pumpCoords.x, pumpCoords.y, pumpCoords.z + 1.2, _U('ExitVehicle'))
 			else
 				local vehicle = GetPlayersLastVehicle()
 				local vehicleCoords = GetEntityCoords(vehicle)
@@ -216,7 +216,7 @@ Citizen.CreateThread(function()
 
 						if GetVehicleFuelLevel(vehicle) < 95 and canFuel then
 							if currentCash > 0 then
-								DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, Config.Strings.EToRefuel)
+								DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('EToRefuel'))
 
 								if IsControlJustReleased(0, 38) then
 									isFueling = true
@@ -225,12 +225,12 @@ Citizen.CreateThread(function()
 									LoadAnimDict("timetable@gardener@filling_can")
 								end
 							else
-								DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, Config.Strings.NotEnoughCash)
+								DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('NotEnoughCash'))
 							end
 						elseif not canFuel then
-							DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, Config.Strings.JerryCanEmpty)
+							DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('JerryCanEmpty'))
 						else
-							DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, Config.Strings.FullTank)
+							DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('FullTank'))
 						end
 					end
 				elseif isNearPump then
@@ -238,7 +238,7 @@ Citizen.CreateThread(function()
 
 					if currentCash >= Config.JerryCanCost then
 						if not HasPedGotWeapon(ped, 883325847) then
-							DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, Config.Strings.PurchaseJerryCan)
+							DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('PurchaseJerryCan'))
 
 							if IsControlJustReleased(0, 38) then
 								GiveWeaponToPed(ped, 883325847, 4500, false, true)
@@ -253,7 +253,7 @@ Citizen.CreateThread(function()
 
 								if refillCost > 0 then
 									if currentCash >= refillCost then
-										DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, Config.Strings.RefillJerryCan .. refillCost)
+										DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('RefillJerryCan') .. refillCost)
 
 										if IsControlJustReleased(0, 38) then
 											TriggerServerEvent('fuel:pay', refillCost)
@@ -261,13 +261,13 @@ Citizen.CreateThread(function()
 											SetPedAmmo(ped, 883325847, 4500)
 										end
 									else
-										DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, Config.Strings.NotEnoughCashJerryCan)
+										DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('NotEnoughCashJerryCan'))
 									end
 								else
-									DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, Config.Strings.JerryCanFull)
+									DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('JerryCanFull'))
 								end
 							else
-								DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, Config.Strings.RefillJerryCan)
+								DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('RefillJerryCan'))
 
 								if IsControlJustReleased(0, 38) then
 									SetPedAmmo(ped, 883325847, 4500)
@@ -275,7 +275,7 @@ Citizen.CreateThread(function()
 							end
 						end
 					else
-						DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, Config.Strings.NotEnoughCash)
+						DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('NotEnoughCash'))
 					end
 				else
 					Citizen.Wait(250)
