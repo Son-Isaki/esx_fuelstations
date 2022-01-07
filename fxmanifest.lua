@@ -9,9 +9,9 @@ version '1.0'
 -- What to run
 client_scripts {
 	'config.lua',
-	'client/functions.lua',
     'locales/en.lua',
     'locales/fr.lua',
+	'client/functions.lua',
 	'client/main.lua'
 }
 
