@@ -8,17 +8,19 @@ version '1.0'
 
 -- What to run
 client_scripts {
-	'config.lua',
+	'@es_extended/locale.lua',
     'locales/en.lua',
     'locales/fr.lua',
+	'config.lua',
 	'client/functions.lua',
 	'client/main.lua'
 }
 
 server_scripts {
-	'config.lua',
+	'@es_extended/locale.lua',
     'locales/en.lua',
     'locales/fr.lua',
+	'config.lua',
 	'server/main.lua'
 }
 

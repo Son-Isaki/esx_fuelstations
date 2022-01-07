@@ -1,12 +1,11 @@
-if Config.UseESX then
-	Citizen.CreateThread(function()
-		while not ESX do
-			TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+ESX = nil
 
-			Citizen.Wait(500)
-		end
-	end)
-end
+Citizen.CreateThread(function()
+	while ESX == nil do
+		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+		Citizen.Wait(0)
+	end
+end)
 
 local isNearPump = false
 local isFueling = false
@@ -83,13 +82,11 @@ Citizen.CreateThread(function()
 		if pumpDistance < 2.5 then
 			isNearPump = pumpObject
 
-			if Config.UseESX then
-				local playerData = ESX.GetPlayerData()
-				for i=1, #playerData.accounts, 1 do
-					if playerData.accounts[i].name == 'money' then
-						currentCash = playerData.accounts[i].money
-						break
-					end
+			local playerData = ESX.GetPlayerData()
+			for i=1, #playerData.accounts, 1 do
+				if playerData.accounts[i].name == 'money' then
+					currentCash = playerData.accounts[i].money
+					break
 				end
 			end
 		else
@@ -163,9 +160,7 @@ AddEventHandler('fuel:refuelFromPump', function(pumpObject, ped, vehicle)
 			local stringCoords = GetEntityCoords(pumpObject)
 			local extraString = ""
 
-			if Config.UseESX then
-				extraString = "\n" .. _U('TotalCost') .. ": ~g~$" .. Round(currentCost, 1)
-			end
+			extraString = "\n" .. _U('TotalCost') .. ": ~g~$" .. Round(currentCost, 1)
 
 			DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('CancelFuelingPump') .. extraString)
 			DrawText3Ds(vehicleCoords.x, vehicleCoords.y, vehicleCoords.z + 0.5, Round(currentFuel, 1) .. "%")
@@ -238,7 +233,7 @@ Citizen.CreateThread(function()
 
 					if currentCash >= Config.JerryCanCost then
 						if not HasPedGotWeapon(ped, 883325847) then
-							DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('PurchaseJerryCan'))
+							DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('PurchaseJerryCan', ESX.Math.GroupDigits(Config.JerryCanCost)))
 
 							if IsControlJustReleased(0, 38) then
 								GiveWeaponToPed(ped, 883325847, 4500, false, true)
@@ -248,30 +243,22 @@ Citizen.CreateThread(function()
 								currentCash = ESX.GetPlayerData().money
 							end
 						else
-							if Config.UseESX then
-								local refillCost = Round(Config.RefillCost * (1 - GetAmmoInPedWeapon(ped, 883325847) / 4500))
+							local refillCost = Round(Config.RefillCost * (1 - GetAmmoInPedWeapon(ped, 883325847) / 4500))
 
-								if refillCost > 0 then
-									if currentCash >= refillCost then
-										DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('RefillJerryCan') .. refillCost)
+							if refillCost > 0 then
+								if currentCash >= refillCost then
+									DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('RefillJerryCan', ESX.Math.GroupDigits(refillCost)))
 
-										if IsControlJustReleased(0, 38) then
-											TriggerServerEvent('fuel:pay', refillCost)
+									if IsControlJustReleased(0, 38) then
+										TriggerServerEvent('fuel:pay', refillCost)
 
-											SetPedAmmo(ped, 883325847, 4500)
-										end
-									else
-										DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('NotEnoughCashJerryCan'))
+										SetPedAmmo(ped, 883325847, 4500)
 									end
 								else
-									DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('JerryCanFull'))
+									DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('NotEnoughCashJerryCan'))
 								end
 							else
-								DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('RefillJerryCan'))
-
-								if IsControlJustReleased(0, 38) then
-									SetPedAmmo(ped, 883325847, 4500)
-								end
+								DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, _U('JerryCanFull'))
 							end
 						end
 					else
@@ -316,7 +303,7 @@ if Config.ShowNearestGasStationOnly then
 			Citizen.Wait(10000)
 		end
 	end)
-elseif Config.ShowAllGasStations then
+else
 	Citizen.CreateThread(function()
 		for _, gasStationCoords in pairs(Config.GasStations) do
 			CreateBlip(gasStationCoords)
